@@ -1,0 +1,61 @@
+{
+    "name": "aribaOpenAPI_proxy",
+    "version": "1.0.0",
+    "description": "ariba OpenAPI proxy to OData",
+    "repository": "https://github.tools.sap/I541370/aribaOpenAPI_proxy",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap-cloud-sdk/http-client": "^3.4.0",
+        "@sap-cloud-sdk/resilience": "^3.4.0",
+        "@sap/cds": "^7",
+        "@sap/xssec": "^3",
+        "cors": "^2.8.5",
+        "express": "^4",
+        "passport": "^0"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.108.18",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-ariba-openapi-ui-fs": "cds watch --open ariba-openapi-ui-fs/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy aribaOpenAPI_proxy --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "watch-ariba-openapi-ui-fe": "cds watch --open ariba-openapi-ui-fe/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-ariba-openapi-ui-fe-mod": "cds watch --open ariba-openapi-ui-fe-mod/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "cds": {
+        "kind": "odata-v4",
+        "features": {
+            "fiori_preview": true
+        },
+        "requires": {
+            "odata": {
+                "flavor": "x4"
+            },
+            "aribaOAuthServer": {
+                "kind": "rest",
+                "credentials": {
+                    "url": "https://api.ariba.com/v2/oauth/token?grant_type=client_credentials"
+                }
+            },
+            "aribaOpenAPI_OperationalReportingForProcurement": {
+                "kind": "rest",
+                "impl": "srv/external/aribaOpenAPI.js",
+                "credentials": {
+                    "url": "https://openapi.ariba.com/api/procurement-reporting-view/v2/prod"
+                }
+            },
+            "auth": "mocked"
+        }
+    },
+    "sapux": [
+        "app/ariba-openapi-ui-fe",
+        "app/ariba-openapi-ui-fe-mod"
+    ]
+}
