@@ -121,7 +121,7 @@ service ReportingService {
         $Type: 'UI.DataField',
         Value: InitialUniqueName
       },
-      ImageUrl      : 'https://www.alleganyco.gov/wp-content/uploads/unknown-person-icon-Image-from.png',
+      ImageUrl      : 'https://tempbucket-aribabtpws-material.s3.ap-northeast-1.amazonaws.com/unknownmaterial.png',
       TypeName      : '購買依頼',
       TypeNamePlural: '購買依頼',
       Description   : {
